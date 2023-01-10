@@ -15,9 +15,9 @@ df1 = df1[
     (df1['accomunit'] == 'BEDPL')
     & (df1['unit'] == 'NR')
     & (df1['nace_r2'] == 'I551')
-][['geo\\time', 'unit', '2016 ']]
+][['geo\\time', '2016 ']]
 
-df2 = df2[df2['ind_type'] == 'IND_TOTAL'][['geo\\time', 'unit', '2016 ']]
+df2 = df2[df2['ind_type'] == 'IND_TOTAL'][['geo\\time', '2016 ']]
 
 def filter_df(df: DataFrame):
     df = df[~df['2016 '].str.contains(':')]
@@ -25,13 +25,13 @@ def filter_df(df: DataFrame):
     df = df[~df['geo\\time'].isin(['EA', 'EU27_2007', 'EU27_2020', 'EU28'])]
     return df
 
-def convert_unit_col_to_float(series: Series):
+def convert_val_col_to_float(series: Series):
     return series.replace({' b': ''}, regex=True).astype(float)
 
 df1 = filter_df(df1)
 df2 = filter_df(df2)
-df1['2016 '] = convert_unit_col_to_float(df1['2016 '])
-df2['2016 '] = convert_unit_col_to_float(df2['2016 '])
+df1['2016 '] = convert_val_col_to_float(df1['2016 '])
+df2['2016 '] = convert_val_col_to_float(df2['2016 '])
 
 df1 = df1.rename(columns={'geo\\time': 'country_code', '2016 ': 'number_of_bed_places'})
 df2 = df2.rename(columns={'geo\\time': 'country_code', '2016 ': 'percentage_of_individuals_online'})
